@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo de Ensaios de Aniversário</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf9f7;
+      --surface: #ffffff;
+      --surface2: #f3f1ed;
+      --border: rgba(0,0,0,0.1);
+      --border-strong: rgba(0,0,0,0.18);
+      --text: #1a1a18;
+      --text2: #6b6b66;
+      --text3: #9e9e97;
+      --gold: #b8972e;
+      --gold-light: #f5edd6;
+      --gold-mid: #d4ac47;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #16150f;
+        --surface: #1f1e16;
+        --surface2: #2a2920;
+        --border: rgba(255,255,255,0.09);
+        --border-strong: rgba(255,255,255,0.16);
+        --text: #f0ede4;
+        --text2: #9e9b8e;
+        --text3: #6b6860;
+        --gold-light: #2e2710;
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: var(--surface);
+      border-bottom: 0.5px solid var(--border);
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      gap: 1rem;
+    }
+
+    .header-brand { display: flex; align-items: center; gap: 12px; }
+
+    .brand-icon {
+      width: 36px; height: 36px;
+      background: var(--gold-light);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+
+    .brand-text h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .brand-text p {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 1px;
+      letter-spacing: 0.3px;
+    }
+
+    .header-actions { display: flex; gap: 8px; align-items: center; }
+
+    .btn-primary {
+      background: var(--text);
+      color: var(--surface);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 9px 18px;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.15s;
+      white-space: nowrap;
+    }
+    .btn-primary:hover { opacity: 0.78; }
+
+    .btn-export {
+      background: var(--gold-light);
+      color: var(--gold);
+      border: 0.5px solid var(--gold-mid);
+      border-radius: var(--radius-sm);
+      padding: 9px 14px;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      white-space: nowrap;
+    }
+    .btn-export:hover { opacity: 0.8; }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      background: var(--surface);
+      border-bottom: 0.5px solid var(--border);
+      padding: 0.75rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-stats { display: flex; gap: 16px; }
+    .stat { font-size: 12px; color: var(--text2); }
+    .stat strong { color: var(--text); font-weight: 500; }
+
+    .toolbar-search {
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+    }
+    .toolbar-search input {
+      width: 100%;
+      padding: 8px 12px 8px 34px;
+      border: 0.5px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      background: var(--bg);
+      color: var(--text);
+      transition: border-color 0.15s;
+    }
+    .toolbar-search input:focus { outline: none; border-color: var(--gold-mid); }
+    .toolbar-search .icon {
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      font-size: 14px; pointer-events: none;
+    }
+
+    .filter-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+    .filter-btn {
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 0.5px solid var(--border-strong);
+      background: transparent;
+      font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text2);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--gold-light);
+      color: var(--gold);
+      border-color: var(--gold-mid);
+    }
+
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 18px;
+      padding: 1.5rem 2rem 3rem;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+      animation: fadeIn 0.3s ease both;
+    }
+    .card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+    .card-img-wrap {
+      width: 100%; height: 210px;
+      position: relative; overflow: hidden;
+      cursor: zoom-in;
+    }
+    .card-img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .card:hover .card-img-wrap img { transform: scale(1.03); }
+
+    .card-img-placeholder {
+      width: 100%; height: 210px;
+      background: var(--surface2);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      cursor: pointer;
+    }
+    .card-img-placeholder span { font-size: 32px; }
+    .card-img-placeholder p { font-size: 12px; color: var(--text3); }
+
+    .card-badge {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 3px 9px;
+      border-radius: 20px;
+      letter-spacing: 0.4px;
+      backdrop-filter: blur(4px);
+    }
+
+    .card-num-badge {
+      position: absolute; top: 10px; right: 10px;
+      background: var(--gold-light);
+      color: var(--gold);
+      font-size: 10px;
+      font-weight: 500;
+      padding: 3px 9px;
+      border-radius: 20px;
+      letter-spacing: 0.3px;
+    }
+
+    .card-body { padding: 1rem 1rem 0.75rem; }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .card-prompt {
+      font-size: 12px;
+      color: var(--text2);
+      line-height: 1.65;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-tags {
+      display: flex; gap: 5px; flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .tag {
+      background: var(--surface2);
+      border-radius: 20px;
+      padding: 2px 9px;
+      font-size: 11px;
+      color: var(--text3);
+    }
+
+    .card-actions {
+      display: flex; gap: 6px;
+      padding: 0.5rem 1rem 0.875rem;
+    }
+
+    .btn-sm {
+      flex: 1;
+      padding: 7px 6px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-weight: 500;
+      text-align: center;
+    }
+    .btn-edit {
+      background: var(--surface2);
+      border: 0.5px solid var(--border);
+      color: var(--text);
+    }
+    .btn-edit:hover { border-color: var(--border-strong); }
+    .btn-copy {
+      background: var(--gold-light);
+      border: 0.5px solid var(--gold-mid);
+      color: var(--gold);
+    }
+    .btn-copy:hover { opacity: 0.8; }
+    .btn-del {
+      background: none;
+      border: 0.5px solid transparent;
+      color: var(--text3);
+      flex: 0 0 auto;
+      padding: 7px 10px;
+    }
+    .btn-del:hover { color: #c0392b; border-color: rgba(192,57,43,0.3); }
+
+    /* ── EMPTY ── */
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 5rem 2rem;
+      color: var(--text3);
+    }
+    .empty p:first-child { font-size: 40px; margin-bottom: 12px; }
+    .empty p { font-size: 14px; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200;
+      padding: 1rem;
+      backdrop-filter: blur(3px);
+    }
+    .modal-overlay.hidden { display: none; }
+
+    .modal {
+      background: var(--surface);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 580px;
+      max-height: 92vh;
+      overflow-y: auto;
+      animation: slideUp 0.22s ease;
+      border: 0.5px solid var(--border-strong);
+    }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 0.5px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; background: var(--surface); z-index: 1;
+    }
+    .modal-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 19px; font-weight: 600; color: var(--text);
+    }
+    .btn-close {
+      background: var(--surface2); border: none; border-radius: 50%;
+      width: 30px; height: 30px; font-size: 16px;
+      cursor: pointer; color: var(--text2);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+    .btn-close:hover { background: var(--border); }
+
+    .modal-body {
+      padding: 1.5rem;
+      display: flex; flex-direction: column; gap: 1.1rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: 11px; font-weight: 500;
+      color: var(--text2);
+      margin-bottom: 6px;
+      text-transform: uppercase; letter-spacing: 0.6px;
+    }
+    .field input, .field textarea, .field select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 0.5px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      background: var(--bg);
+      color: var(--text);
+      transition: border-color 0.15s;
+    }
+    .field textarea { resize: vertical; min-height: 110px; line-height: 1.65; }
+    .field input:focus, .field textarea:focus, .field select:focus {
+      outline: none; border-color: var(--gold-mid);
+    }
+
+    .img-upload-area {
+      border: 2px dashed var(--border-strong);
+      border-radius: var(--radius-sm);
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .img-upload-area:hover { border-color: var(--gold-mid); background: var(--gold-light); }
+    .img-upload-area p { font-size: 12px; color: var(--text3); margin-top: 6px; }
+
+    .img-preview {
+      width: 100%; max-height: 220px;
+      object-fit: cover; border-radius: var(--radius-sm);
+      display: none;
+    }
+
+    .tags-input {
+      display: flex; gap: 6px; flex-wrap: wrap;
+      padding: 8px;
+      border: 0.5px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      cursor: text; background: var(--bg);
+      min-height: 40px; align-items: center;
+    }
+    .tags-input:focus-within { border-color: var(--gold-mid); }
+    .tag-item {
+      background: var(--surface2);
+      border-radius: 20px; padding: 3px 10px;
+      font-size: 12px; color: var(--text);
+      cursor: pointer; user-select: none;
+      transition: background 0.15s;
+    }
+    .tag-item:hover { background: rgba(192,57,43,0.1); color: #c0392b; }
+    .tags-input input {
+      border: none; outline: none;
+      font-size: 13px; background: transparent;
+      color: var(--text); flex: 1; min-width: 100px;
+      font-family: 'DM Sans', sans-serif; padding: 2px 4px;
+    }
+
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      border-top: 0.5px solid var(--border);
+      display: flex; gap: 8px; justify-content: flex-end;
+    }
+    .btn-cancel {
+      background: none; border: 0.5px solid var(--border-strong);
+      border-radius: var(--radius-sm); padding: 9px 20px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px;
+      cursor: pointer; color: var(--text2); transition: border-color 0.15s;
+    }
+    .btn-cancel:hover { border-color: var(--border-strong); color: var(--text); }
+    .btn-save {
+      background: var(--text); color: var(--surface);
+      border: none; border-radius: var(--radius-sm);
+      padding: 9px 24px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px;
+      cursor: pointer; font-weight: 500; transition: opacity 0.15s;
+    }
+    .btn-save:hover { opacity: 0.8; }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.9);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 300; cursor: zoom-out;
+      backdrop-filter: blur(6px);
+    }
+    .lightbox.hidden { display: none; }
+    .lightbox img {
+      max-width: 92%; max-height: 92vh;
+      border-radius: var(--radius);
+      object-fit: contain;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 1.5rem; right: 1.5rem;
+      background: var(--text); color: var(--surface);
+      padding: 10px 20px; border-radius: var(--radius-sm);
+      font-size: 13px; z-index: 400;
+      opacity: 0; transform: translateY(10px);
+      transition: all 0.22s;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .header { padding: 1rem; }
+      .toolbar { padding: 0.75rem 1rem; }
+      .grid { padding: 1rem 1rem 3rem; gap: 12px; }
+      .brand-text p { display: none; }
+      .btn-export { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-brand">
+      <div class="brand-icon">✦</div>
+      <div class="brand-text">
+        <h1>Catálogo de Ensaios</h1>
+        <p>Fotos de referência &amp; prompts · Aniversário</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-export" onclick="exportData()">⬇ Exportar</button>
+      <button class="btn-primary" onclick="openModal()">+ Nova foto</button>
+    </div>
+  </header>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="toolbar-stats">
+      <span class="stat"><strong id="count">0</strong> fotos</span>
+      <span class="stat">·</span>
+      <span class="stat"><strong id="cat-count">0</strong> categorias</span>
+    </div>
+    <div class="toolbar-search">
+      <span class="icon">🔍</span>
+      <input type="text" placeholder="Buscar por título, prompt ou tag…" id="search" oninput="filterCards()" />
+    </div>
+    <div class="filter-btns" id="filter-btns">
+      <button class="filter-btn active" data-cat="Todos" onclick="setFilter(this)">Todos</button>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <main class="grid" id="grid"></main>
+
+  <!-- MODAL -->
+  <div class="modal-overlay hidden" id="modal" onclick="closeOnOverlay(event)">
+    <div class="modal" id="modal-inner">
+      <div class="modal-header">
+        <h2 id="modal-title">Nova foto de referência</h2>
+        <button class="btn-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="field">
+          <label>Título</label>
+          <input type="text" id="f-title" placeholder="Ex: Pose com balões dourados" />
+        </div>
+        <div class="field">
+          <label>Imagem de referência</label>
+          <div class="img-upload-area" id="upload-area" onclick="document.getElementById('f-img-input').click()">
+            <img id="f-img-preview" class="img-preview" alt="preview" />
+            <div id="f-img-placeholder">
+              <div style="font-size:28px;">📷</div>
+              <p>Clique para carregar uma imagem</p>
+              <p style="margin-top:4px;font-size:11px;">JPG, PNG, WEBP</p>
+            </div>
+          </div>
+          <input type="file" id="f-img-input" accept="image/*" style="display:none;" onchange="previewImage(event)" />
+        </div>
+        <div class="field">
+          <label>Prompt (em inglês para IA)</label>
+          <textarea id="f-prompt" placeholder="Ex: Birthday portrait, woman in golden sequin dress, surrounded by gold and white balloons, soft studio lighting, shallow depth of field, elegant and glamorous mood…"></textarea>
+        </div>
+        <div class="field">
+          <label>Categoria</label>
+          <select id="f-cat">
+            <option value="Pose">Pose</option>
+            <option value="Iluminação">Iluminação</option>
+            <option value="Cenário">Cenário</option>
+            <option value="Detalhe">Detalhe</option>
+            <option value="Grupo">Grupo</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tags (pressione Enter para adicionar)</label>
+          <div class="tags-input" id="tags-container" onclick="document.getElementById('tag-input').focus()"></div>
+        </div>
+        <div class="field">
+          <label>URL da imagem (opcional, alternativa ao upload)</label>
+          <input type="text" id="f-img-url" placeholder="https://exemplo.com/foto.jpg" oninput="previewUrl()" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        <button class="btn-save" onclick="saveCard()">Salvar foto</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox hidden" id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="Foto ampliada" />
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ── DADOS INICIAIS ──
+    const INITIAL = [
+      {
+        id: 1,
+        title: "Pose com balões dourados",
+        img: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&q=80",
+        prompt: "Birthday portrait photography, woman in golden sequin dress, surrounded by floating gold and white balloons, soft studio lighting, shallow depth of field, elegant glamorous mood, 35mm lens, bokeh background, warm tones, professional photography.",
+        cat: "Pose",
+        tags: ["dourado", "balões", "estúdio"]
+      },
+      {
+        id: 2,
+        title: "Mesa de bolo luxuosa",
+        img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80",
+        prompt: "Luxury birthday cake table, elegant multi-tier white cake with gold leaf details, floral arrangements with roses and pampas grass, candles, golden cutlery, marble table, soft warm bokeh background, fine art food photography.",
+        cat: "Cenário",
+        tags: ["bolo", "mesa", "luxo"]
+      },
+      {
+        id: 3,
+        title: "Retrato com flores",
+        img: "https://images.unsplash.com/photo-1517263904808-5dc91e3e7044?w=600&q=80",
+        prompt: "Close-up birthday portrait, woman with floral crown, soft natural window light, dreamy pastel bokeh, joyful expression, fine art portrait style, 85mm prime lens, light and airy editing, romantic mood.",
+        cat: "Pose",
+        tags: ["flores", "retrato", "natural"]
+      },
+      {
+        id: 4,
+        title: "Silhueta ao entardecer",
+        img: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80",
+        prompt: "Birthday silhouette portrait, golden hour outdoor photography, woman in flowing dress, backlit by warm sunset, dramatic sky with orange and purple tones, hands raised in celebration, cinematic style, wide angle lens.",
+        cat: "Iluminação",
+        tags: ["pôr do sol", "silhueta", "externo"]
+      },
+      {
+        id: 5,
+        title: "Detalhe do vestido",
+        img: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&q=80",
+        prompt: "Detail shot of birthday dress, elegant lace and sequin texture close-up, soft shallow depth of field, macro photography style, luxurious fabric details, warm studio lighting, fashion editorial aesthetic.",
+        cat: "Detalhe",
+        tags: ["vestido", "detalhe", "moda"]
+      },
+      {
+        id: 6,
+        title: "Grupo de amigas",
+        img: "https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=600&q=80",
+        prompt: "Group birthday portrait, friends celebrating together, coordinated elegant outfits, confetti falling, candid joyful laughter, soft natural lighting, golden bokeh background, warm color grading, lifestyle photography.",
+        cat: "Grupo",
+        tags: ["amigas", "confetti", "alegria"]
+      },
+      {
+        id: 7,
+        title: "Luz de neon dramática",
+        img: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&q=80",
+        prompt: "Dramatic birthday portrait, neon light accents in pink and gold, dark studio background, woman in sequin dress, moody cinematic lighting, fashion editorial style, high contrast, bold and powerful composition.",
+        cat: "Iluminação",
+        tags: ["neon", "dramático", "editorial"]
+      },
+      {
+        id: 8,
+        title: "Jardim florido",
+        img: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=600&q=80",
+        prompt: "Outdoor birthday portrait in blooming garden, woman sitting among wildflowers, vintage floral dress, soft dappled natural light, romantic film photography aesthetic, warm golden tones, shallow focus on subject.",
+        cat: "Cenário",
+        tags: ["jardim", "flores", "vintage"]
+      },
+      {
+        id: 9,
+        title: "Taça de champanhe",
+        img: "https://images.unsplash.com/photo-1543007630-9710e4a00a20?w=600&q=80",
+        prompt: "Elegant birthday celebration portrait, woman holding champagne flute, bubbles close-up in foreground, elegant evening dress, soft warm ambient light, luxury party atmosphere, fine art photography, selective focus.",
+        cat: "Pose",
+        tags: ["champanhe", "elegante", "festa"]
+      },
+      {
+        id: 10,
+        title: "Espelho e reflexos",
+        img: "https://images.unsplash.com/photo-1524638431109-93d95c968f03?w=600&q=80",
+        prompt: "Creative birthday portrait using mirrors, multiple reflections of subject, elegant outfit, soft ambient light, art deco aesthetic, fashion editorial style, sophisticated composition, blush and gold color palette.",
+        cat: "Cenário",
+        tags: ["espelho", "reflexo", "art deco"]
+      }
+    ];
+
+    // ── ESTADO ──
+    let cards = [];
+    let editId = null;
+    let currentTags = [];
+    let activeFilter = "Todos";
+
+    function loadData() {
+      try {
+        const saved = localStorage.getItem('catalogo_ensaio_v2');
+        cards = saved ? JSON.parse(saved) : INITIAL.map(c => ({ ...c }));
+      } catch (e) {
+        cards = INITIAL.map(c => ({ ...c }));
+      }
+    }
+
+    function saveData() {
+      try { localStorage.setItem('catalogo_ensaio_v2', JSON.stringify(cards)); } catch (e) {}
+    }
+
+    // ── RENDER ──
+    function render(data) {
+      const grid = document.getElementById('grid');
+      if (!data.length) {
+        grid.innerHTML = '<div class="empty"><p>📷</p><p>Nenhuma foto encontrada</p></div>';
+        return;
+      }
+      grid.innerHTML = data.map((c, i) => `
+        <div class="card" style="animation-delay:${i * 0.04}s">
+          ${c.img
+            ? `<div class="card-img-wrap" onclick="openLightbox('${c.img.replace(/'/g,"\\'")}')">
+                <img src="${c.img}" alt="${c.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'card-img-placeholder\\'><span>🖼</span><p>Imagem indisponível</p></div>'" />
+                <span class="card-badge">${c.cat}</span>
+                <span class="card-num-badge">#${String(c.id).padStart(2,'0')}</span>
+               </div>`
+            : `<div class="card-img-placeholder" onclick="editCard(${c.id})">
+                <span>📷</span><p>Adicionar imagem</p>
+                <span class="card-badge">${c.cat}</span>
+               </div>`
+          }
+          <div class="card-body">
+            <div class="card-title">${c.title}</div>
+            <div class="card-prompt">${c.prompt}</div>
+            <div class="card-tags">${(c.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-sm btn-edit" onclick="editCard(${c.id})">✏ Editar</button>
+            <button class="btn-sm btn-copy" onclick="copyPrompt(${c.id})">⎘ Copiar prompt</button>
+            <button class="btn-sm btn-del" onclick="deleteCard(${c.id})" title="Excluir">✕</button>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('count').textContent = cards.length;
+      const cats = [...new Set(cards.map(c => c.cat))];
+      document.getElementById('cat-count').textContent = cats.size || cats.length;
+      renderFilters(cats);
+    }
+
+    function renderFilters(cats) {
+      const container = document.getElementById('filter-btns');
+      const all = ['Todos', ...cats];
+      container.innerHTML = all.map(cat => `
+        <button class="filter-btn ${activeFilter === cat ? 'active' : ''}" data-cat="${cat}" onclick="setFilter(this)">${cat}</button>
+      `).join('');
+    }
+
+    function setFilter(btn) {
+      activeFilter = btn.dataset.cat;
+      filterCards();
+    }
+
+    function filterCards() {
+      const q = document.getElementById('search').value.toLowerCase();
+      let filtered = cards;
+      if (activeFilter !== 'Todos') filtered = filtered.filter(c => c.cat === activeFilter);
+      if (q) filtered = filtered.filter(c =>
+        c.title.toLowerCase().includes(q) ||
+        c.prompt.toLowerCase().includes(q) ||
+        (c.tags||[]).some(t => t.toLowerCase().includes(q))
+      );
+      render(filtered);
+    }
+
+    // ── MODAL ──
+    function openModal(id) {
+      editId = id || null;
+      currentTags = [];
+      document.getElementById('f-title').value = '';
+      document.getElementById('f-prompt').value = '';
+      document.getElementById('f-cat').value = 'Pose';
+      document.getElementById('f-img-url').value = '';
+      document.getElementById('f-img-preview').style.display = 'none';
+      document.getElementById('f-img-placeholder').style.display = 'block';
+      document.getElementById('f-img-input').value = '';
+      renderTagsInput();
+
+      if (id) {
+        const c = cards.find(x => x.id === id);
+        document.getElementById('modal-title').textContent = 'Editar foto';
+        document.getElementById('f-title').value = c.title;
+        document.getElementById('f-prompt').value = c.prompt;
+        document.getElementById('f-cat').value = c.cat || 'Pose';
+        currentTags = [...(c.tags || [])];
+        renderTagsInput();
+        if (c.img) {
+          document.getElementById('f-img-preview').src = c.img;
+          document.getElementById('f-img-preview').style.display = 'block';
+          document.getElementById('f-img-placeholder').style.display = 'none';
+          if (c.img.startsWith('http')) document.getElementById('f-img-url').value = c.img;
+        }
+      } else {
+        document.getElementById('modal-title').textContent = 'Nova foto de referência';
+      }
+      document.getElementById('modal').classList.remove('hidden');
+    }
+
+    function closeModal() { document.getElementById('modal').classList.add('hidden'); }
+    function closeOnOverlay(e) { if (e.target.id === 'modal') closeModal(); }
+
+    function previewImage(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        document.getElementById('f-img-preview').src = ev.target.result;
+        document.getElementById('f-img-preview').style.display = 'block';
+        document.getElementById('f-img-placeholder').style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function previewUrl() {
+      const url = document.getElementById('f-img-url').value.trim();
+      if (url.startsWith('http')) {
+        document.getElementById('f-img-preview').src = url;
+        document.getElementById('f-img-preview').style.display = 'block';
+        document.getElementById('f-img-placeholder').style.display = 'none';
+      }
+    }
+
+    // ── TAGS ──
+    function renderTagsInput() {
+      const cont = document.getElementById('tags-container');
+      cont.innerHTML = '';
+      currentTags.forEach(t => {
+        const span = document.createElement('span');
+        span.className = 'tag-item';
+        span.textContent = t + ' ×';
+        span.onclick = () => { currentTags = currentTags.filter(x => x !== t); renderTagsInput(); };
+        cont.appendChild(span);
+      });
+      const input = document.createElement('input');
+      input.type = 'text'; input.id = 'tag-input';
+      input.placeholder = currentTags.length ? '' : 'Ex: dourado, balões…';
+      input.onkeydown = addTag;
+      cont.appendChild(input);
+    }
+
+    function addTag(e) {
+      if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        const val = e.target.value.replace(',','').trim();
+        if (val && !currentTags.includes(val)) { currentTags.push(val); renderTagsInput(); }
+        else if (e.target) e.target.value = '';
+      }
+    }
+
+    // ── SALVAR ──
+    function saveCard() {
+      const title = document.getElementById('f-title').value.trim();
+      const prompt = document.getElementById('f-prompt').value.trim();
+      const cat = document.getElementById('f-cat').value;
+      const urlInput = document.getElementById('f-img-url').value.trim();
+      const previewSrc = document.getElementById('f-img-preview').src || '';
+      let img = '';
+      if (previewSrc.startsWith('data:')) img = previewSrc;
+      else if (urlInput.startsWith('http')) img = urlInput;
+      else if (previewSrc.startsWith('http')) img = previewSrc;
+
+      if (!title) { showToast('⚠ Adicione um título!'); return; }
+      if (!prompt) { showToast('⚠ Adicione o prompt!'); return; }
+
+      if (editId) {
+        const idx = cards.findIndex(x => x.id === editId);
+        cards[idx] = { ...cards[idx], title, prompt, cat, tags: currentTags, img };
+      } else {
+        const maxId = cards.length ? Math.max(...cards.map(c => c.id)) : 0;
+        cards.push({ id: maxId + 1, title, prompt, cat, tags: currentTags, img });
+      }
+
+      saveData(); filterCards(); closeModal();
+      showToast(editId ? '✓ Foto atualizada!' : '✓ Foto adicionada!');
+    }
+
+    function editCard(id) { openModal(id); }
+
+    function deleteCard(id) {
+      if (!confirm('Excluir esta foto do catálogo?')) return;
+      cards = cards.filter(c => c.id !== id);
+      saveData(); filterCards();
+      showToast('Foto removida.');
+    }
+
+    // ── COPIAR PROMPT ──
+    function copyPrompt(id) {
+      const c = cards.find(x => x.id === id);
+      const text = c.prompt;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => showToast('✓ Prompt copiado!')).catch(() => fallbackCopy(text));
+      } else { fallbackCopy(text); }
+    }
+
+    function fallbackCopy(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+      showToast('✓ Prompt copiado!');
+    }
+
+    // ── LIGHTBOX ──
+    function openLightbox(src) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox').classList.remove('hidden');
+    }
+    function closeLightbox() { document.getElementById('lightbox').classList.add('hidden'); }
+
+    // ── EXPORT ──
+    function exportData() {
+      const json = JSON.stringify(cards, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url;
+      a.download = 'catalogo-ensaios.json'; a.click();
+      URL.revokeObjectURL(url);
+      showToast('✓ Backup exportado!');
+    }
+
+    // ── TOAST ──
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2400);
+    }
+
+    // ── TECLADO ──
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { closeModal(); closeLightbox(); }
+    });
+
+    // ── INIT ──
+    loadData();
+    filterCards();
+  </script>
+</body>
+</html>
